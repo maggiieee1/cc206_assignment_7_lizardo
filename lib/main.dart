@@ -28,13 +28,16 @@ class CalculatorScreen extends StatefulWidget {
 }
 
 class _CalculatorScreenState extends State<CalculatorScreen> {
-  // Manage the sum section
+  // Manage the results for each operation
   double sum = 0.0;
+  double difference = 0.0;
+  double product = 0.0;
+  double quotient = 0.0;
 
   // TextEditingControllers for each operation's input fields
   final TextEditingController addFirstController = TextEditingController();
   final TextEditingController addSecondController = TextEditingController();
-  
+
   final TextEditingController subFirstController = TextEditingController();
   final TextEditingController subSecondController = TextEditingController();
 
@@ -52,7 +55,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           : operation == '*' 
             ? mulFirstController.text 
             : divFirstController.text) ?? 0;
-            
+
     double num2 = double.tryParse(operation == '+' 
         ? addSecondController.text 
         : operation == '-' 
@@ -67,13 +70,13 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           sum = num1 + num2;
           break;
         case '-':
-          sum = num1 - num2;
+          difference = num1 - num2;
           break;
         case '*':
-          sum = num1 * num2;
+          product = num1 * num2;
           break;
         case '/':
-          sum = num2 != 0 ? num1 / num2 : 0;
+          quotient = num2 != 0 ? num1 / num2 : 0; // Prevent division by zero
           break;
       }
     });
@@ -90,7 +93,12 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       mulSecondController.clear();
       divFirstController.clear();
       divSecondController.clear();
+      
+      // Reset all results
       sum = 0.0;
+      difference = 0.0;
+      product = 0.0;
+      quotient = 0.0;
     });
   }
 
@@ -122,7 +130,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   keyboardType: TextInputType.number,
                 ),
               ),
-              Text(' = $sum'),
+              Text(' = $sum'), // Display addition result
               IconButton(
                 onPressed: () => _calculate('+'),
                 icon: const Icon(Icons.add),
@@ -149,7 +157,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   keyboardType: TextInputType.number,
                 ),
               ),
-              Text(' = $sum'),
+              Text(' = $difference'), // Display subtraction result
               IconButton(
                 onPressed: () => _calculate('-'),
                 icon: const Icon(Icons.remove),
@@ -176,7 +184,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   keyboardType: TextInputType.number,
                 ),
               ),
-              Text(' = $sum'),
+              Text(' = $product'), // Display multiplication result
               IconButton(
                 onPressed: () => _calculate('*'),
                 icon: const Icon(Icons.clear),
@@ -203,7 +211,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   keyboardType: TextInputType.number,
                 ),
               ),
-              Text(' = $sum'),
+              Text(' = $quotient'), // Display divisionn result
               IconButton(
                 onPressed: () => _calculate('/'),
                 icon: const Icon(Icons.horizontal_rule),
